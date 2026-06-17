@@ -29,6 +29,7 @@ def tambah_buku(request):
         deskripsi = request.POST.get('deskripsi')
 
         with connection.cursor() as cursor:
+            # Hapus bagian ', isbn' dan '%s' paling ujung agar sesuai dengan kolom tabel asli kamu
             cursor.execute("""
                 INSERT INTO buku (judul, pengarang, kategori, penerbit, tahun_terbit, rak, stok, deskripsi)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -37,8 +38,6 @@ def tambah_buku(request):
         return redirect('list_buku')
     
     return render(request, 'buku/tambah_buku.html')
-
-
 # ==========================================
 # FUNGSI 3: MENGUBAH DATA BUKU (U - Update)
 # ==========================================
@@ -53,6 +52,7 @@ def edit_buku(request, id):
             rak = request.POST.get('rak')
             stok = request.POST.get('stok')
             deskripsi = request.POST.get('deskripsi')
+            isbn = request.POST.get('isbn', None)
 
             cursor.execute("""
                 UPDATE buku 
